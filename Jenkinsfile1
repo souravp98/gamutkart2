@@ -8,7 +8,7 @@ pipeline {
 //		M2_INSTALL = "/usr/bin/mvn"
 //	}
     environment{
-        TEST_FAIL_THRESHOLD
+        TEST_FAIL_THRESHOLD = 5
     }
 
     stages {
