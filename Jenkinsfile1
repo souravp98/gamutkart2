@@ -36,7 +36,7 @@ pipeline {
           steps {
               def failedTests = 4
               echo "no. of failed tests: $(failedTests)"
-              if(failedTests > ENV.TEST_FAIL_THRESHOLD.toInteger()){
+              if(failedTests > env.TEST_FAIL_THRESHOLD.toInteger()){
                  error "Test failures exceed the threshold of ${env.TEST_FAIL_THERESHOLD}.Failing the build."
               }else{
                  echo "all tests are passed within the acceptable threshold"
