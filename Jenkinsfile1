@@ -34,16 +34,17 @@ pipeline {
   
         stage('Code Quality'){
           steps {
+            script{
               def failedTests = 4
               echo "no. of failed tests: ${failedTests}"
-              if(failedTests > env.TEST_FAIL_THRESHOLD.toInteger()){
+              if (failedTests > env.TEST_FAIL_THRESHOLD.toInteger()){
                  error "Test failures exceed the threshold of ${env.TEST_FAIL_THERESHOLD}.Failing the build."
               }else{
                  echo "all tests are passed within the acceptable threshold"
               }
             }
          }
-              
+        }
         stage('Deployment') {
             steps {
                 sh 'sshpass -p "wiculty" scp target/gamutkart.war wiculty@172.17.0.2:/home/wiculty/Distros/apache-tomcat-10.1.28/webapps'
