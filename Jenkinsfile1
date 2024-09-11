@@ -7,7 +7,7 @@ pipeline {
        }
 
 //	environment {
-//		 DOCKER_IMAGE = 'gamutkart-img:latest'
+//		 DOCKER_IMAGE = 'souravp98/gamutkart-img:latest'
 //	}
     environment{
         TEST_FAIL_THRESHOLD = 5
@@ -50,7 +50,7 @@ pipeline {
         stage('Build Docker image') {
             steps { 
               script {
-                 def app = docker.build("${env.DOCKER_IMAGE}")
+                 docker.build("${env.DOCKER_IMAGE}")
                   }
                  }
            }
@@ -58,6 +58,7 @@ pipeline {
           steps {
             script {
                docker.withRegistry('https://registry.hub.docker.com','souravp98-dockerhub') {
+                                 def app = docker.build("${env.DOCKER_IMAGE}")
                                  app.push()
                  }
               }
