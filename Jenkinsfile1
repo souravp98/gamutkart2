@@ -54,7 +54,7 @@ pipeline {
             script {
                 withCredentials([usernamepassword(credentialsId:'souravp98-dockerhub',usernameVariable:'DOCKER-HUB-USERNAME',passwordVariable:'DOCKER_HUB_PASSWORD')] {
                           sh "echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USERNAME} --password-stdin"  
-                          sh "docker push $(env.DOCKER_IMAGE}"
+                          sh "docker push ${env.DOCKER_IMAGE}"
                  }
               }
           }
