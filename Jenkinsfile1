@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-      docker {
-          image 'maven:3.6.3-jdk-11'
-          args '-v /var/run/docker.sock:/var/run/docker.sock'
-         }
-       }
+    agent any
 
 //	environment {
 //		 DOCKER_IMAGE = 'souravp98/gamutkart-img:latest'
@@ -50,20 +45,20 @@ pipeline {
         stage('Build Docker image') {
             steps { 
               script {
-                 docker.build("${env.DOCKER_IMAGE}")
+                    sh docker build -t ${env.DOCKER_IMAGE} ."
                   }
                  }
            }
          stage('Push docker image') {
           steps {
             script {
-               docker.withRegistry('https://registry.hub.docker.com','souravp98-dockerhub') {
-                                 def app = docker.build("${env.DOCKER_IMAGE}")
-                                 app.push()
+                withCredentials([usernamepassword(credentialsId:'souravp98-dockerhub',usernameVariable:'DOCKER-HUB-USERNAME',passwordVariable:'DOCKER_HUB_PASSWORD')] {
+                          sh "echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USERNAME} --password-stdin"  
+                          sh "docker push $(env.DOCKER_IMAGE}"
                  }
               }
           }
-         }
+         
   
         stage('Deployment') {
             steps {
